@@ -1,0 +1,5 @@
+adafruit-circuitpython-servokit
+openai
+numpy
+scipy
+sounddevice
