@@ -1,5 +1,6 @@
 adafruit-circuitpython-servokit
-openai
 numpy
+openai
+piper-tts
 scipy
 sounddevice

@@ -23,6 +23,7 @@ For the hardware component you'll need:
 - Something to control it - I used a [raspberry pi 5](https://www.amazon.com/dp/B0D95QBKJ4) (you don't necessarily need the full kit)
 - Parts to connect the servo to the jaw - like [this](https://www.amazon.com/dp/B0006O4G7S), [this](https://www.amazon.com/dp/B0006O4GFK), and [this](https://www.amazon.com/dp/B0006O4G4Q)
 - For a raspberry pi you may get a lot of "jitters" from the servo - I used [this](https://www.amazon.com/dp/B01D1D0CX2) to help with that (powered by [this](https://www.amazon.com/dp/B08JYPMCZY)). [Here](https://www.youtube.com/watch?v=oeLmbXrHi_c&t=192s) is a good YouTube video explaining more on this.
+- microphone and speaker
 
 Here are a couple fo good YouTube videos for helping with the hardware setup
 - https://youtu.be/Jk3ZsyrTU4M?si=O4LXjLbh5Ey28FjZ&t=238
