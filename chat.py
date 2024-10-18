@@ -28,7 +28,7 @@ def get_prompt(conversation_history = ""):
     You are an animatronic talking skull in a person's front yard. It is Halloween time and people will want to talk with you. 
     You need to be dark and somewhat ominous. If you have an opportunity to be witty or sarcastic, then take it, but don't be corny. 
     One-sentence answers are often the most appropriate but you can be slightly longer if it's necessary.
-    corny. No emojis. In triple backticks is the previous conversation you have had so far. The most recent messages are at the bottom.
+    No emojis. In triple backticks is the previous conversation you have had so far. The most recent messages are at the bottom.
 
     ```
     {conversation_history}
@@ -54,26 +54,19 @@ def send_to_gpt(text, prompt, temperature = 0.5):
     return response.choices[0].message.content
 
 
-def get_text_from_audio():
-    recording = sd.rec(int(DURATIION * FREQUENCY), samplerate=FREQUENCY, channels=1)
-
-    # Record audio for the given number of seconds
-    sd.wait()
-    print("done recording...")
-    write(RECORDED_FILE, FREQUENCY, recording)
-    audio_file= open(RECORDED_FILE, "rb")
+def get_text_from_recording(recording, filename=RECORDED_FILE):
+    print("writing audio file..")
+    write(filename, FREQUENCY, recording)
+    audio_file = open(filename, "rb")
+    print("getting transcription..")
     transcription = client.audio.transcriptions.create(
       model="whisper-1", 
       file=audio_file
     )
+    os.remove(filename)
+
     return transcription.text
 
-
-def respond_to_audio(prompt):
-    text = get_text_from_audio()
-    response = send_to_gpt(text, prompt)
-    return response
-    
 
 def record_until_silence(duration=0.75, threshold=0.1, samplerate=44100):
     """Records audio until a period of silence is detected."""
@@ -96,8 +89,8 @@ def record_until_silence(duration=0.75, threshold=0.1, samplerate=44100):
         if silent_time > 1.5:  # Adjust this value as needed
             break
 
-    print("Recording finished.")
-    print(len(audio_data))
+    print(f"Recording finished. Captured chunks: {len(audio_data)}")
+
     if audio_data:
         return np.concatenate(audio_data)
         
@@ -134,15 +127,7 @@ def main():
             new_session = False
         audio_data = record_until_silence()
         if audio_data is not None:
-            print("writing file")
-            write(RECORDED_FILE, FREQUENCY, audio_data)
-            audio_data = open(RECORDED_FILE, "rb")
-            print("getting transcription")
-            transcription = client.audio.transcriptions.create(
-                model="whisper-1",
-                file=audio_data
-            )
-            text = transcription.text
+            text = get_text_from_recording(audio_data)
             print("Speech to text:", text)
             history_str = "\n".join(history)
             prompt = get_prompt(history_str)
@@ -163,7 +148,6 @@ def main():
 
             with open(CONVERSATION_HISTORY_FILE, "a") as myfile:
                 myfile.write(convo)
-            os.remove(RECORDED_FILE)
             os.remove(RESPONSE_FILE)
         else:
             cnt += 1

@@ -11,7 +11,7 @@ the four required parts:
 - Recording speech - this requires listening in a loop and detecting when the speaker has stopped speaking
 - Speech to text - this send the recorded wav file to the [Open AI Speech to Text API](https://platform.openai.com/docs/guides/speech-to-text)
 - AI-generated response - this sends the text to an OpenAI GPT-4o model to get a response
-- Text to speech - this uses [Piper]( https://github.com/rhasspy/piper) to use a voice model to return spoken text
+- Text to speech - this uses [Piper]( https://github.com/rhasspy/piper) to use a voice model to return spoken text. You will need a couple [voice](https://github.com/rhasspy/piper?tab=readme-ov-file#voices) files for the model. Piper will download these automatically the first time you run it from the CLI and specify the voice.
 
 Currently, there is quite a bit of latency and this will require optimizations or possibly a different model for a faster
 response. I'll probably provide an update on that soon.
